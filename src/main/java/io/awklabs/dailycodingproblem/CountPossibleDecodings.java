@@ -34,9 +34,40 @@ public class CountPossibleDecodings {
         return count;
     }
 
+    public static int countPossibleDecoding_DP(char[] input, int n) {
+
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+
+        int[] count = new int[n + 1];
+        count[0] = 1;
+        count[1] = 1;
+
+        if (input[0] == '0') {
+            return 0;
+        }
+
+        for (int i = 2; i <= n; i++) {
+
+            count[i] = 0;
+
+            if (input[i - 1] > '0') {
+                count[i] = count[i - 1];
+            }
+
+            if ((input[n - 2] == '1') || (input[n - 2] == '2' && input[n - 1] < '7')) {
+                count[i] += count[i - 2];
+            }
+        }
+
+        return count[n];
+    }
+
     public static void main(String[] args) {
         String input = "111";
         System.out.println(countPossibleDecoding(input.toCharArray(), input.length()));
+        System.out.println(countPossibleDecoding_DP(input.toCharArray(), input.length()));
 
     }
 }
